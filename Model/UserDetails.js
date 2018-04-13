@@ -23,14 +23,28 @@ const UserLoginToken = mongoose.Schema({
   IsValid:Boolean
 });
 
+const UserDetailsAES = mongoose.Schema({
+  AESToken:String,
+  Message:String,
+  Date:String,
+  CallLog:String,
+  IsCall:Boolean,
+  IsSMS:Boolean,  
+  IsViewed:Boolean
+});
+
+
   const UserDetailsModel  = mongoose.model('UserDetails',UserDetails);
   const UserLoginTokenModel  = mongoose.model('UserLoginToken',UserLoginToken);
+  const UserDetailsAESModel  = mongoose.model('UserDetailsAES',UserDetailsAES);
+  
 
 
 
   module.exports = {
     UserDetails: UserDetailsModel,
-    UserLoginTokenM :UserLoginTokenModel
+    UserLoginTokenM :UserLoginTokenModel,
+    UserDetailsAESM:UserDetailsAESModel
     //, FoodType: FoodTypeModal,
     // PhoneDetails: UPhoneDetails,
     // ByLocation: UByLocation
