@@ -151,7 +151,7 @@ router.post('/getAESLogDetails', (req, res, next) => {
         }, (mongoerr, mongoresponse) => {
             //  console.log("findData" + mongoresponse);
             //  console.log("mongoerr:" + mongoerr);
-            if (mongoerr == null) {
+            if (mongoresponse != null) {
                 res.json({
                     success: true,
                     Data: mongoresponse
@@ -178,7 +178,7 @@ router.post('/getAESallLogDetails', (req, res, next) => {
         UserdetailsM.UserDetailsAESM.find({
             AESToken: AESToken
         }, (mongoerr, mongoresponse) => {
-            if (mongoerr == null) {
+            if (mongoresponse != null) {
                 res.json({
                     success: true,
                     Data: mongoresponse
@@ -245,7 +245,7 @@ router.post('/GetLoginToken', (req, res) => {
             Password: password,
             Date: new Date().toDateString()
         }, (mongoerr, mongoresponse) => {
-            if (mongoerr == null) {
+            if (mongoresponse != null) {
                 res.json({
                     success: true,
                     AESToken: mongoresponse.AESToken
@@ -258,6 +258,31 @@ router.post('/GetLoginToken', (req, res) => {
             }
         });
 
+    }
+});
+
+
+router.post('/postExceptionDetails', (req, res) => {
+    var Exception = req.body.Exception;
+    if (Exception !="" && Exception != null) {
+        var ObjExceptionUserDetailsM = new UserdetailsM.ExceptionUserDetailsM({
+            Exception:Exception,
+            Date: new Date().toDateString()
+        });
+        ObjExceptionUserDetailsM.save((mongoerr, success) => {
+            if (mongoerr != null) res.json({
+                success: false,
+                msg: 'Not added',
+                error: mongoerr,
+                AESToken: ""
+            });
+            else
+                res.json({
+                    success: true,
+                    msg: 'Added',
+                    AESToken: Token
+                });
+        });
     }
 });
 

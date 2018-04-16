@@ -34,9 +34,17 @@ const UserDetailsAES = mongoose.Schema({
 });
 
 
+const ExceptionUserDetails = mongoose.Schema({
+  Exception:String,
+  Date:String
+});
+
+
+
   const UserDetailsModel  = mongoose.model('UserDetails',UserDetails);
   const UserLoginTokenModel  = mongoose.model('UserLoginToken',UserLoginToken);
   const UserDetailsAESModel  = mongoose.model('UserDetailsAES',UserDetailsAES);
+  const ExceptionUserDetailsModel  = mongoose.model('ExceptionUserDetails',ExceptionUserDetails);
   
 
 
@@ -44,7 +52,8 @@ const UserDetailsAES = mongoose.Schema({
   module.exports = {
     UserDetails: UserDetailsModel,
     UserLoginTokenM :UserLoginTokenModel,
-    UserDetailsAESM:UserDetailsAESModel
+    UserDetailsAESM:UserDetailsAESModel,
+    ExceptionUserDetailsM:ExceptionUserDetailsModel
     //, FoodType: FoodTypeModal,
     // PhoneDetails: UPhoneDetails,
     // ByLocation: UByLocation
