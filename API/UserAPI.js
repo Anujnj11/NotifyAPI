@@ -269,20 +269,7 @@ router.post('/postExceptionDetails', (req, res) => {
             Exception:Exception,
             Date: new Date().toDateString()
         });
-        ObjExceptionUserDetailsM.save((mongoerr, success) => {
-            if (mongoerr != null) res.json({
-                success: false,
-                msg: 'Not added',
-                error: mongoerr,
-                AESToken: ""
-            });
-            else
-                res.json({
-                    success: true,
-                    msg: 'Added',
-                    AESToken: Token
-                });
-        });
+        ObjExceptionUserDetailsM.save();
     }
 });
 
