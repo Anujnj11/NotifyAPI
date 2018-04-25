@@ -99,6 +99,44 @@ const IV_LENGTH = 16; // For AES, this is always 16
 // });
 
 //Encryption Post with AES
+// router.post('/postAESLogDetails', (req, res, next) => {
+//     var AESToken = req.body.AESToken;
+//     if (AESToken != undefined && AESToken != null && AESToken != "") {
+//         var message = req.body.Message;
+//         var Date = req.body.Date;
+//         var CallLog = req.body.CallLog;
+//         var ObjIsCall = req.body.IsCall;
+//         var ObjIsSMS = req.body.IsSMS;
+//         // console.log("Username:" + Username, "MacId:" + MacId);
+//         var ObjUserDetailsAESM = new UserdetailsM.UserDetailsAESM({
+//             AESToken: AESToken,
+//             Message: message,
+//             Date: Date,
+//             CallLog: CallLog,
+//             IsCall: ObjIsCall,
+//             IsSMS: ObjIsSMS,
+//             IsViewed: false
+//         });
+//         ObjUserDetailsAESM.save((mongoerr, success) => {
+//             if (mongoerr != null) res.json({
+//                 success: false,
+//                 msg: 'Not added',
+//                 error: mongoerr
+//             });
+//             else
+//                 res.json({
+//                     success: true,
+//                     msg: 'Added'
+//                 });
+//         });
+//     } else {
+//         res.json({
+//             success: false,
+//             msg: 'Required AES'
+//         });
+//     }
+// });
+
 router.post('/postAESLogDetails', (req, res, next) => {
     var AESToken = req.body.AESToken;
     if (AESToken != undefined && AESToken != null && AESToken != "") {
@@ -117,18 +155,46 @@ router.post('/postAESLogDetails', (req, res, next) => {
             IsSMS: ObjIsSMS,
             IsViewed: false
         });
-        ObjUserDetailsAESM.save((mongoerr, success) => {
-            if (mongoerr != null) res.json({
-                success: false,
-                msg: 'Not added',
-                error: mongoerr
+        if (ObjIsSMS) {
+            UserdetailsM.UserDetailsAESM.find({
+                AESToken: AESToken,
+                Message: message
+            }, (err, MongoSucc) => {
+                if (MongoSucc.length == 0) {
+                    ObjUserDetailsAESM.save((mongoerr, success) => {
+                        if (mongoerr != null) res.json({
+                            success: false,
+                            msg: 'Not added',
+                            error: mongoerr
+                        });
+                        else
+                            res.json({
+                                success: true,
+                                msg: 'Added'
+                            });
+                    });
+                } else {
+                    res.json({
+                        success: false,
+                        msg: 'Not added',
+                        error: err
+                    });
+                }
             });
-            else
-                res.json({
-                    success: true,
-                    msg: 'Added'
+        } else {
+            ObjUserDetailsAESM.save((mongoerr, success) => {
+                if (mongoerr != null) res.json({
+                    success: false,
+                    msg: 'Not added',
+                    error: mongoerr
                 });
-        });
+                else
+                    res.json({
+                        success: true,
+                        msg: 'Added'
+                    });
+            });
+        }
     } else {
         res.json({
             success: false,
@@ -136,6 +202,8 @@ router.post('/postAESLogDetails', (req, res, next) => {
         });
     }
 });
+
+
 
 router.post('/getAESLogDetails', (req, res, next) => {
     var AESToken = req.body.AESToken;
@@ -264,9 +332,9 @@ router.post('/GetLoginToken', (req, res) => {
 
 router.post('/postExceptionDetails', (req, res) => {
     var Exception = req.body.Exception;
-    if (Exception !="" && Exception != null) {
+    if (Exception != "" && Exception != null) {
         var ObjExceptionUserDetailsM = new UserdetailsM.ExceptionUserDetailsM({
-            Exception:Exception,
+            Exception: Exception,
             Date: new Date().toDateString()
         });
         ObjExceptionUserDetailsM.save();

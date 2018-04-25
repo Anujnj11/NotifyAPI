@@ -49,7 +49,7 @@ app.use(bodyparser.json());
 app.use('/api',UserLogAPI);
 
 app.use('/',(req,res)=>{
-    res.send('Welcome');
+    res.send('sorry this website is not available in your country.');
 });
 
 app.listen(port,()=>{
